@@ -3,7 +3,17 @@
 import argparse
 import tweepy
 from time import sleep
+from picamera import PiCamera
 from credentials import *
+
+def takePhotos(totalLength, frequency):
+  currentLength = 0
+  camera = PiCamera()
+  while currentLength < totalLength:
+    # if modulus of currentLength / frequency equals 0 take photo
+    if currentLength % frequency == 0:
+      camera.capture('image.jpg')
+    currentLength += 1
 
 def tweet(filename, status, video):
   auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
@@ -22,6 +32,7 @@ def main():
   if args.totalLength and args.frequency and args.project:
     print 'start taking photos...'
     # start taking photos
+    takePhotos(args.totalLength, args.frequency)
 
     # compile photos
 
